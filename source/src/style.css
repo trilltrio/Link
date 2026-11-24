@@ -96,3 +96,30 @@ textarea{min-height:76px;resize:vertical}
 @media(max-width:760px){.bars{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.body{padding-left:16px}table{font-size:13px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* v2: learn / test split */
+.learn{padding-bottom:4px}
+.testdiv{display:flex;align-items:center;gap:10px;margin:18px 0 4px;color:var(--pink);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.testdiv::before,.testdiv::after{content:"";flex:1;height:2px;background:var(--pink);opacity:.6}
+.test .try:first-child{margin-top:8px}
+.test .sample{background:#06192c;border:1px solid var(--line);border-radius:6px;padding:12px;margin:0 0 12px;font-size:15px}
+.test .sample b{display:block;font-size:13px;color:var(--mute);margin-bottom:4px}
+pre.tmpl{font:16px/1.55 "Hanken Grotesk",system-ui,sans-serif}
+.mine{display:inline-block;font-size:12px;font-weight:800;padding:2px 8px;border-radius:99px;background:#ffd166;color:#2a1d00;margin-bottom:6px;letter-spacing:.02em}
+.minebox{border:1px solid #ffd166;border-radius:8px;padding:12px;margin:12px 0;background:#1b2a3a}
+.later{font-size:14px;color:var(--sky);margin:6px 0 0;font-weight:600}
+.prefs fieldset{border:0;padding:0;margin:0 0 14px}
+.prefs legend{font-weight:600;font-size:15px;margin-bottom:6px;padding:0}
+.prefs label.opt2{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:6px;margin-bottom:6px;cursor:pointer;font-size:15px}
+.prefs label.opt2:has(input:checked){border-color:var(--sky);background:#0f3358}
+.prefs input[type=radio],.prefs input[type=checkbox]{width:20px;height:20px;margin:1px 0 0;flex:none;accent-color:var(--sky)}
+.backbtn{margin-top:10px;border-color:var(--pink);color:var(--pink)}
+.groupcopy{margin-top:12px;width:100%;border-color:var(--pink);color:var(--pink)}
+.peek{margin-top:12px;background:#06192c}
+.peek summary{font-size:15px;min-height:44px}
+.kit{display:grid;gap:16px;margin-top:18px}
+.kitem{background:#0c2a49;border:1px solid var(--line);border-radius:8px;padding:14px}
+.kitem.empty{opacity:.6}
+.pick{display:grid;gap:12px;margin-top:20px}
+.pick a{display:block;padding:18px;border:1px solid var(--line);border-radius:10px;background:#0c2a49;color:var(--ink);text-decoration:none}
+.pick a b{font-size:20px;display:block;margin-bottom:4px}
+.pick a:hover{border-color:var(--sky)}

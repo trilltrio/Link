@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lesson 1 Fast Digestion</title>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#0a2540;--bg2:#0f2f52;--ink:#f4f8fc;--mute:#a9c3da;--sky:#8fd3ff;--pink:#ff5c8a;--line:#24507a;--paper:#f6f9fc;--pink2:#2a0612;--green:#3ddc97;--green2:#06281a;--red:#ff6b6b}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 "Hanken Grotesk",system-ui,sans-serif;overflow-x:clip}
+.band{padding-block:clamp(24px,4vw,52px);padding-inline:max(5vw,16px)}
+.wrap{max-width:1100px;margin:0 auto}
+.crumb{color:var(--mute);font-size:14px;font-weight:600;margin-bottom:8px}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+h1{font-weight:300;font-size:clamp(32px,5vw,52px);line-height:1.05;letter-spacing:-.02em;margin:0;text-wrap:balance}
+h2{font-weight:600;font-size:clamp(22px,3vw,30px);line-height:1.1;margin:0 0 14px}
+p{margin:0 0 12px;max-width:68ch}
+.trophy{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;white-space:nowrap}
+.meter{width:140px;height:10px;border-radius:99px;background:#123a63;overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:var(--pink);transition:width .4s}
+.trophy.plat .meter i{background:linear-gradient(90deg,#e8eef5,#8fd3ff,#e8eef5)}
+.bars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:22px}
+.bar{background:#0c2a49;border:1px solid var(--line);border-top:4px solid var(--sky);border-radius:8px;padding:14px}
+.bar:nth-child(4){border-top-color:var(--pink)}
+.bar small{display:block;color:var(--mute);font-size:13px;font-weight:600;margin-bottom:4px}
+.bar div{font-size:16px;font-weight:600;line-height:1.35}
+.alt{background:var(--bg2)}
+.hint{color:var(--mute);font-size:15px;margin-bottom:16px}
+.locks{display:grid;gap:12px}
+details{background:#0c2a49;border:1px solid var(--line);border-radius:8px}
+details[open]{border-color:var(--sky)}
+summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:14px;padding:14px 16px;min-height:56px;font-weight:600;font-size:17px}
+summary::-webkit-details-marker{display:none}
+summary:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.lk{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--line);color:var(--mute);font-size:14px}
+details.got .lk{background:var(--pink);border-color:var(--pink);color:var(--pink2)}
+.body{padding:0 16px 16px 60px}
+.src{color:var(--mute);font-size:14px}
+.copyhead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:8px 0}
+button{font:600 15px "Hanken Grotesk",sans-serif;min-height:44px;padding:0 18px;border-radius:6px;border:1px solid var(--sky);background:transparent;color:var(--sky);cursor:pointer}
+button:hover{background:#123a63}
+button:focus-visible,a:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+pre{overflow-x:auto;background:#06192c;border:1px solid var(--line);border-radius:8px;padding:14px;margin:0;font:14px/1.6 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--mute);font-weight:600;font-size:14px}
+td:first-child{font-weight:600}
+.opts{display:grid;gap:10px}
+.opt{border:1px solid var(--line);border-radius:6px;padding:12px}
+.tag{display:inline-block;font-size:13px;font-weight:600;padding:2px 8px;border-radius:99px;background:#123a63;color:var(--sky);margin-bottom:6px}
+.tag.w{background:var(--pink);color:var(--pink2)}
+.pass{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:10px;margin-top:10px}
+.pass div{border-radius:6px;padding:12px;font-size:15px}
+.pass .ok{border:1px solid var(--sky)}
+.pass .no{border:1px solid var(--pink)}
+ol{padding-left:1.2em;margin:6px 0}
+li{margin-bottom:6px}
+/* wrong (red) vs right (blue) */
+.vs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:10px;margin:8px 0 4px}
+.vs div{border-radius:6px;padding:10px 12px;font-size:15px}
+.vs .bad{border:1px solid var(--red);background:#2a1622}
+.vs .good{border:1px solid var(--sky);background:#0f3358}
+.vs b{display:block;font-size:13px;margin-bottom:2px}
+.vs .bad b{color:var(--red)}
+.vs .good b{color:var(--sky)}
+/* try it now */
+.try{margin-top:14px;border:1px dashed var(--sky);border-radius:8px;padding:14px;background:#0a2240}
+.try.done{border-style:solid;border-color:var(--green)}
+.tryhead{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--sky);margin-bottom:6px}
+.try.done .tryhead{color:var(--green)}
+.tryhead .st{font-size:12px;letter-spacing:0;text-transform:none;font-weight:600;color:var(--mute)}
+.try.done .tryhead .st{color:var(--green)}
+.q{font-weight:600;margin-bottom:10px}
+.choices{display:grid;gap:8px}
+.choice{text-align:left;width:100%;min-height:48px;padding:10px 14px;border-color:var(--line);color:var(--ink);font-weight:400;line-height:1.4}
+.choice.wrong{border-color:var(--red);background:#2a1622;color:#ffd1d1}
+.choice.right{border-color:var(--green);background:var(--green);color:var(--green2);font-weight:600}
+.fb{margin:10px 0 0;font-size:15px;min-height:1px}
+.fb.no{color:#ffb3b3}
+.fb.yes{color:var(--green)}
+.field{display:grid;gap:6px;margin-top:10px}
+.field label{font-weight:600;font-size:15px}
+.field label small{display:block;font-weight:400;color:var(--mute);font-size:14px}
+textarea,input[type=text]{width:100%;font:16px/1.45 "Hanken Grotesk",sans-serif;color:var(--ink);background:#06192c;border:1px solid var(--line);border-radius:6px;padding:10px 12px}
+textarea{min-height:76px;resize:vertical}
+.field.ok textarea,.field.ok input{border-color:var(--green)}
+.frow{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.frow span{font-size:13px;color:var(--mute)}
+.field.ok .frow span{color:var(--green)}
+.frow button{min-height:40px;padding:0 14px;font-size:14px}
+/* next button */
+.next{margin-top:22px}
+.nextbtn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:68px;border-radius:10px;font:800 clamp(18px,2.6vw,22px) "Hanken Grotesk",sans-serif;text-decoration:none;text-align:center;padding:12px 18px}
+.nextbtn.locked{background:#123a63;color:var(--mute);border:2px dashed var(--line);pointer-events:none}
+.nextbtn.open{background:var(--pink);color:var(--pink2);border:2px solid var(--pink)}
+.nextnote{text-align:center;color:var(--mute);font-size:14px;margin-top:8px}
+.plat{display:none;margin-top:18px;padding:16px;border-radius:8px;background:linear-gradient(90deg,#dfe7f0,#8fd3ff);color:#0a2540;font-weight:600}
+.plat.on{display:block}
+.saved{margin-top:22px}
+.saved pre{max-height:360px;overflow:auto}
+@media(max-width:760px){.bars{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.body{padding-left:16px}table{font-size:13px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* v2: learn / test split */
+.learn{padding-bottom:4px}
+.testdiv{display:flex;align-items:center;gap:10px;margin:18px 0 4px;color:var(--pink);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.testdiv::before,.testdiv::after{content:"";flex:1;height:2px;background:var(--pink);opacity:.6}
+.test .try:first-child{margin-top:8px}
+.test .sample{background:#06192c;border:1px solid var(--line);border-radius:6px;padding:12px;margin:0 0 12px;font-size:15px}
+.test .sample b{display:block;font-size:13px;color:var(--mute);margin-bottom:4px}
+pre.tmpl{font:16px/1.55 "Hanken Grotesk",system-ui,sans-serif}
+.mine{display:inline-block;font-size:12px;font-weight:800;padding:2px 8px;border-radius:99px;background:#ffd166;color:#2a1d00;margin-bottom:6px;letter-spacing:.02em}
+.minebox{border:1px solid #ffd166;border-radius:8px;padding:12px;margin:12px 0;background:#1b2a3a}
+.later{font-size:14px;color:var(--sky);margin:6px 0 0;font-weight:600}
+.prefs fieldset{border:0;padding:0;margin:0 0 14px}
+.prefs legend{font-weight:600;font-size:15px;margin-bottom:6px;padding:0}
+.prefs label.opt2{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:6px;margin-bottom:6px;cursor:pointer;font-size:15px}
+.prefs label.opt2:has(input:checked){border-color:var(--sky);background:#0f3358}
+.prefs input[type=radio],.prefs input[type=checkbox]{width:20px;height:20px;margin:1px 0 0;flex:none;accent-color:var(--sky)}
+.backbtn{margin-top:10px;border-color:var(--pink);color:var(--pink)}
+.groupcopy{margin-top:12px;width:100%;border-color:var(--pink);color:var(--pink)}
+.peek{margin-top:12px;background:#06192c}
+.peek summary{font-size:15px;min-height:44px}
+.kit{display:grid;gap:16px;margin-top:18px}
+.kitem{background:#0c2a49;border:1px solid var(--line);border-radius:8px;padding:14px}
+.kitem.empty{opacity:.6}
+.pick{display:grid;gap:12px;margin-top:20px}
+.pick a{display:block;padding:18px;border:1px solid var(--line);border-radius:10px;background:#0c2a49;color:var(--ink);text-decoration:none}
+.pick a b{font-size:20px;display:block;margin-bottom:4px}
+.pick a:hover{border-color:var(--sky)}
+</style>
+</head>
+<body data-lesson="l1" data-prefix="sp1d" id="top">
+<section class="band">
+<div class="wrap">
+<div class="crumb">Didier's version · Lesson 1 of 2 · <a href="../index.html" style="color:var(--mute)">switch version</a></div>
+<div class="top">
+<h1>Lesson 1: read your agents in under a minute</h1>
+<div class="trophy" id="trophy"><span id="tcount">0 / 6</span><div class="meter"><i id="tbar"></i></div></div>
+</div>
+<style>
+.plate{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,.8fr) minmax(0,1.4fr);gap:clamp(14px,3vw,36px);align-items:end;background:#0c2a49;border:1px solid var(--line);border-radius:10px;padding:clamp(16px,3vw,28px)}
+.col{display:flex;flex-direction:column}
+.txt{width:100%;border-radius:4px;background:repeating-linear-gradient(to bottom,var(--line) 0 6px,transparent 6px 13px);transform-origin:bottom;animation:grow 1.2s ease-out both}
+.txt.big{background:repeating-linear-gradient(to bottom,#3a6a98 0 6px,transparent 6px 13px)}
+@keyframes grow{from{transform:scaleY(.05)}to{transform:scaleY(1)}}
+.fn{font-weight:300;font-size:clamp(30px,4.5vw,50px);line-height:1;margin-top:10px;white-space:nowrap}
+.fl{color:var(--mute);font-size:14px}
+.stack{display:grid;gap:8px}
+.slot{border-radius:6px;padding:11px 14px;background:#123a63;border:1px solid var(--line)}
+.slot b{display:block;font-size:17px}
+.slot span{color:var(--mute);font-size:14px}
+.slot.p1{background:var(--pink);border-color:var(--pink);color:var(--pink2)}
+.slot.p1 span{color:#4a0d20}
+@media(max-width:760px){.plate{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.plate .col:last-child{grid-column:1/-1}}
+</style>
+<div class="plate" role="img" aria-label="A 600-word answer beside a 3,200-word answer, and the 4-part stack that replaces them">
+<div class="col"><div class="txt" style="height:calc(min(40vw,320px)*600/3200)"></div><div class="fn">600</div><div class="fl">words, typical answer</div></div>
+<div class="col"><div class="txt big" style="height:min(40vw,320px)"></div><div class="fn">3,200</div><div class="fl">words, top user's answer</div></div>
+<div class="col"><div class="stack">
+<div class="slot p1"><b>1. Needs you</b><span>Stop here if that's all you need</span></div>
+<div class="slot"><b>2. Goal met?</b><span>Yes, partly or no, with proof</span></div>
+<div class="slot"><b>3. Short path</b><span>Next 1 to 3 moves</span></div>
+<div class="slot"><b>4. Errors and why</b><span>What broke, what's a guess</span></div>
+</div><div class="fl" style="margin-top:10px">Same work, read top-down</div></div>
+</div>
+<div class="bars"><div class="bar"><small>What it is</small><div>Agent answers built the way you read: top-down, with visuals.</div></div><div class="bar"><small>Why it matters</small><div>Reading the output is the slow part, not the agent's work.</div></div><div class="bar"><small>What to do</small><div>Build your answer-style block and give it to your agent.</div></div><div class="bar"><small>How you know</small><div>You notice the difference on the very next answer.</div></div></div>
+</div>
+</section><section class="band alt">
+<div class="wrap">
+<h2>Unlock the lesson</h2>
+<p class="hint">Each card has a learning part, then a test. Pass all six to unlock Lesson 2.</p>
+<div class="locks" id="locks">
+<details><summary><span class="lk">1</span>Where the numbers come from</summary><div class="body"><div class="learn"><p>The video cites two Anthropic studies. Top users get answers of about 3,200 words versus about 600 for everyone else. Anthropic staff spend about half their week reviewing agent output, while their agents sit idle about 80% of the time.</p><p>So the slow part is not the agent working. It is you reading.</p></div><div class="testdiv">Test</div><div class="test"><div class="try quiz" data-quiz="l1q1" data-answer="b"><div class="tryhead">Try it now<span class="st">Pick one</span></div><p class="q">Per the video, where does the time actually go when you work with agents?</p><div class="choices"><button type="button" class="choice" data-k="a" data-why="Per the video, agents sit idle about 80% of the time.">The agent doing the work</button><button type="button" class="choice" data-k="b" data-why="Staff spend about half their week reviewing. Reading is the slow part.">You reading and reviewing what it wrote</button><button type="button" class="choice" data-k="c" data-why="The prompt matters (that is Lesson 2), but here the slow part is review.">Writing the prompt</button><button type="button" class="choice" data-k="d" data-why="The video never names waiting as the problem. Review is.">Waiting for the model to answer</button></div><p class="fb" aria-live="polite"></p></div></div></div></details><details><summary><span class="lk">2</span>Four parts, top-down</summary><div class="body"><div class="learn"><p>The video's fix is an answer style with four parts, in this order:</p><ol><li><b>Needs you:</b> what only you can decide or give.</li><li><b>Goal met?</b> Yes, partly or no.</li><li><b>Short path:</b> the next few steps.</li><li><b>Errors and why:</b> what went wrong and the reason.</li></ol><p>If nothing needs you, you can stop after line one. The video also mentions Claude Code's built-in concise output style as the simpler option.</p><div class="vs"><div class="bad"><b>Wrong: a story</b>I started by reviewing the files, then I updated the header, then I tried the form, which mostly worked, and along the way I noticed...</div><div class="good"><b>Right: top-down</b>1. Needs you: pick the order email.<br>2. Goal met? Partly.<br>3. Short path: set email, publish.<br>4. Errors: none.</div></div></div><div class="testdiv">Test</div><div class="test"><div class="sample"><b>An agent sends you this</b>I went through the bakery site and fixed the menu layout, which took a while because the photos were huge, so I shrank them. The menu page should load faster now. I also noticed the order form doesn&#x27;t send anywhere yet, and I wasn&#x27;t sure which email you want orders to go to. I&#x27;m not fully sure the shrinking didn&#x27;t blur the cake photos.</div><div class="try quiz" data-quiz="l1q2" data-answer="b"><div class="tryhead">Try it now<span class="st">Pick one</span></div><p class="q">Rebuilt top-down, what goes on the very first line?</p><div class="choices"><button type="button" class="choice" data-k="a" data-why="That is an error. Errors go last.">The photos may be blurry</button><button type="button" class="choice" data-k="b" data-why="It is the one thing only you can answer, so it goes first.">Which email should orders go to?</button><button type="button" class="choice" data-k="c" data-why="That is progress on the goal. It comes second.">The menu loads faster now</button><button type="button" class="choice" data-k="d" data-why="That is a step it took. Steps are the long part you want to skip.">It fixed the menu layout</button></div><p class="fb" aria-live="polite"></p></div></div></div></details><details><summary><span class="lk">3</span>Ask for visuals, not prose</summary><div class="body"><div class="learn"><p>The second fix in the video: when an answer is big, get it as a visual you can read at a glance. The formats it names are a one-page HTML page (like this lesson), Docs, Dashboards, Whiteboards, Sheets, Slides and Motion.</p><div class="minebox"><span class="mine">Didier's addition</span><p style="margin:6px 0">Which visual for which job:</p><div class="scroll"><table><tbody><tr><td>Numbers you watch</td><td>Dashboard</td></tr><tr><td>Rows to sort or fill</td><td>Sheet</td></tr><tr><td>A plan to keep</td><td>Doc</td></tr><tr><td>A process</td><td>Whiteboard</td></tr><tr><td>A walkthrough</td><td>Slides</td></tr><tr><td>A one-off report or lesson</td><td>One-page HTML</td></tr></tbody></table></div></div></div><div class="testdiv">Test</div><div class="test"><div class="sample"><b>The situation</b>You ask your agent to compare prices from five flour suppliers. It sends back 900 words.</div><div class="try quiz" data-quiz="l1q3" data-answer="c"><div class="tryhead">Try it now<span class="st">Pick one</span></div><p class="q">Per the video, what should you ask for instead?</p><div class="choices"><button type="button" class="choice" data-k="a" data-why="More words is the problem, not the fix.">A longer, more careful explanation</button><button type="button" class="choice" data-k="b" data-why="Still 900 words to read.">The same text with key words in bold</button><button type="button" class="choice" data-k="c" data-why="You see all five suppliers side by side at a glance.">A visual, like a sheet or a one-page page</button><button type="button" class="choice" data-k="d" data-why="Reading is already the slow part.">Nothing, just read it slower</button></div><p class="fb" aria-live="polite"></p></div></div></div></details><details><summary><span class="lk">4</span>Build your answer-style block</summary><div class="body"><div class="learn"><p>Your agent can't guess how you like to read. Answer the questions below and this page writes the block for you. You give that block to your agent once, as a standing instruction, and every answer after that follows it.</p></div><div class="testdiv">Test</div><div class="test"><div class="try"><div class="tryhead">Try it now<span class="st">Answer all</span></div><p class="later">Finish the lesson. Everything you write is waiting for you at the end.</p><form id="prefs" class="prefs" onsubmit="return false"><fieldset><legend>1. How should answers be built?</legend><label class="opt2"><input type="radio" name="structure" value="four"><span>Top-down in four parts: needs me, goal met?, short path, errors and why</span></label><label class="opt2"><input type="radio" name="structure" value="concise"><span>Just keep it concise</span></label></fieldset><fieldset><legend>2. Which visuals do you want instead of long prose? Pick any.</legend><label class="opt2"><input type="checkbox" name="vis" value="One-page HTML page"><span>One-page HTML page</span></label><label class="opt2"><input type="checkbox" name="vis" value="Docs"><span>Docs</span></label><label class="opt2"><input type="checkbox" name="vis" value="Dashboards"><span>Dashboards</span></label><label class="opt2"><input type="checkbox" name="vis" value="Whiteboards"><span>Whiteboards</span></label><label class="opt2"><input type="checkbox" name="vis" value="Sheets"><span>Sheets</span></label><label class="opt2"><input type="checkbox" name="vis" value="Slides"><span>Slides</span></label><label class="opt2"><input type="checkbox" name="vis" value="Motion (short animated explainers)"><span>Motion (short animated explainers)</span></label></fieldset><div class="minebox"><span class="mine">Didier's addition</span><fieldset><legend>3. How do you read?</legend><label class="opt2"><input type="radio" name="speed" value="fast"><span>Fast. I skim.</span></label><label class="opt2"><input type="radio" name="speed" value="slow"><span>I take my time.</span></label></fieldset><fieldset><legend>4. Words or visuals first?</legend><label class="opt2"><input type="radio" name="lead" value="visual"><span>Visual first</span></label><label class="opt2"><input type="radio" name="lead" value="words"><span>Words first</span></label><label class="opt2"><input type="radio" name="lead" value="both"><span>Both, side by side</span></label></fieldset><fieldset><legend>5. Match the visual to the job? Pick any.</legend><label class="opt2"><input type="checkbox" name="map" value="num"><span>Numbers I track go on a dashboard</span></label><label class="opt2"><input type="checkbox" name="map" value="walk"><span>Walkthroughs go on slides</span></label></fieldset><fieldset><legend>6. Anything that makes reading harder?</legend><label class="opt2"><input type="radio" name="read" value="none"><span>No</span></label><label class="opt2"><input type="radio" name="read" value="dys"><span>Dyslexia</span></label><label class="opt2"><input type="radio" name="read" value="other"><span>Something else</span></label><input type="text" name="read_other" placeholder="Tell your agent in a few words" autocomplete="off"></fieldset></div></form><div class="copyhead"><b>Your block</b><button type="button" data-copy="prefblock">Copy</button></div><pre id="prefblock" class="tmpl"></pre></div></div></div></details><details><summary><span class="lk">5</span>Test your block</summary><div class="body"><div class="learn"><ol><li>Copy your block from card 4.</li><li>Paste it where your agent keeps standing instructions (project instructions, custom instructions, or a CLAUDE.md file).</li><li>Ask it to redo one answer it already gave you, then put the old and new answers side by side.</li></ol></div><div class="testdiv">Test</div><div class="test"><div class="try quiz" data-quiz="l1q5" data-answer="yes"><div class="tryhead">Try it now (yes or no)<span class="st">Pick one</span></div><p class="q">Did you notice the difference?</p><div class="choices"><button type="button" class="choice" data-k="yes" data-why="Your block works. Leave it on.">Yes</button><button type="button" class="choice" data-k="no" data-why="Then your block needs fixing. Go back to card 4, change your answers, paste the new block and try again." data-back="4">No</button></div><p class="fb" aria-live="polite"></p></div></div></div></details><details><summary><span class="lk">6</span>Rewrite one answer by hand</summary><div class="body"><div class="learn"><p>Your agent will do this for you from now on. Doing it once by hand trains your eye, so you can tell a good answer from a long one in seconds.</p></div><div class="testdiv">Test</div><div class="test"><div class="sample"><b>Rewrite this answer</b>I went through the bakery site and fixed the menu layout, which took a while because the photos were huge, so I shrank them. The menu page should load faster now. I also noticed the order form doesn&#x27;t send anywhere yet, and I wasn&#x27;t sure which email you want orders to go to. I&#x27;m not fully sure the shrinking didn&#x27;t blur the cake photos.</div><div class="try typed"><div class="tryhead">Try it now<span class="st">Saved as you type</span></div><p class="q">Put it in the four parts, one line each.</p><p class="later">Finish the lesson. Everything you write is waiting for you at the end.</p><div class="field"><label for="l1_need">1. Needs you<small>What only you can decide or give.</small></label><textarea id="l1_need" data-save="l1_need" data-min="3" placeholder=""></textarea><div class="frow"><span>Not answered yet</span><button type="button">Copy</button></div></div><div class="field"><label for="l1_goal">2. Goal met?<small>Yes, partly or no.</small></label><textarea id="l1_goal" data-save="l1_goal" data-min="3" placeholder=""></textarea><div class="frow"><span>Not answered yet</span><button type="button">Copy</button></div></div><div class="field"><label for="l1_path">3. Short path<small>The next few steps.</small></label><textarea id="l1_path" data-save="l1_path" data-min="3" placeholder=""></textarea><div class="frow"><span>Not answered yet</span><button type="button">Copy</button></div></div><div class="field"><label for="l1_err">4. Errors and why<small>What went wrong or is a guess.</small></label><textarea id="l1_err" data-save="l1_err" data-min="3" placeholder=""></textarea><div class="frow"><span>Not answered yet</span><button type="button">Copy</button></div></div><details class="peek"><summary>Compare with one good version</summary><div class="body" style="padding-left:16px"><pre class="tmpl">1. Needs you: which email should orders go to?
+2. Goal met? Partly. The menu loads faster; the order form doesn&#x27;t send yet.
+3. Short path: you send the email, I connect the form, then test one order.
+4. Errors and why: the cake photos may look blurry after shrinking. Not checked yet.</pre></div></details></div></div></div></details>
+</div>
+<div class="plat" id="plat">Platinum: Lesson 1 complete.</div><div class="next"><a id="nextbtn" class="nextbtn locked" href="lesson2.html" aria-disabled="true" tabindex="-1"><span>Go to Lesson 2: the manager brief</span><span class="ico" aria-hidden="true">🔒</span></a><p class="nextnote" id="nextnote"></p></div>
+<p class="src" style="margin-top:22px">Built from <a href="https://www.youtube.com/watch?v=81Jg17dQz1A" style="color:var(--sky)">Ben AI's video</a> on how top Claude users work. Study numbers are the video's and were not checked against the raw studies.</p>
+</div>
+</section>
+<script>
+(function(){
+const P=(document.body.dataset.prefix||'sp1x')+':';
+const S={get:k=>{try{return localStorage.getItem(P+k)}catch(e){return null}},
+ set:(k,v)=>{try{localStorage.setItem(P+k,v)}catch(e){}},
+ clear:()=>{try{Object.keys(localStorage).filter(k=>k.startsWith(P)).forEach(k=>localStorage.removeItem(k))}catch(e){}}};
+const val=id=>(S.get('f:'+id)||'').trim();
+
+const WO=[['l2_job','Full job'],['l2_why','Why'],['l2_guard','Guardrails'],['l2_done','Done looks like']];
+const workOrder=()=>WO.map(([id,t])=>t+': '+(val(id)||'[not filled yet]')).join('\n');
+const master=()=>workOrder()+'\nRun these checks yourself and show me the results before you report back.';
+const PROTOCOL=`Standing protocol for every job I give you:
+1. Before you start, make sure the job has a brief in four parts: full job, why, guardrails, and what done looks like.
+2. If any part is unclear, interview me first, then show me the brief and wait for my go.
+3. Treat the guardrails as firm limits. If one is hit, stop and ask me.
+4. Before you report back, run the done checks yourself and show me the results.`;
+
+async function copyText(text,btn){
+ const label=btn.dataset.label||btn.textContent;btn.dataset.label=label;
+ let ok=false;
+ try{await navigator.clipboard.writeText(text);ok=true}catch(e){
+  const t=document.createElement('textarea');t.value=text;t.setAttribute('readonly','');t.style.position='fixed';t.style.opacity='0';
+  document.body.appendChild(t);t.select();t.setSelectionRange(0,text.length);
+  try{ok=document.execCommand('copy')}catch(e2){}
+  t.remove();
+ }
+ btn.textContent=ok?'Copied':'Copy failed, select and copy by hand';
+ setTimeout(()=>{btn.textContent=label},2000);
+}
+
+/* visual preference block (Lesson 1, card 4) */
+function prefBlock(f){
+ if(!f)return'';
+ const g=n=>{const e=f.querySelector(`[name=${n}]:checked`);return e?e.value:''};
+ const all=n=>[...f.querySelectorAll(`[name=${n}]:checked`)].map(e=>e.value);
+ const L=['How I want your answers:'];
+ const st=g('structure');
+ if(st==='four')L.push('- Answer top-down in four parts: 1. Needs me: what only I can decide or give ("None" if nothing). 2. Goal met?: yes, partly or no, with the proof. 3. Short path: the next 1 to 3 steps. 4. Errors and why: what failed or is uncertain, and why.');
+ if(st==='concise')L.push('- Keep every answer concise. Lead with what matters and cut the rest.');
+ const v=all('vis');
+ if(v.length)L.push('- When an answer is more than a few lines, give it to me as a visual instead of long prose. Formats I use: '+v.join(', ')+'.');
+ const sp=g('speed');
+ if(sp==='fast')L.push('- I read fast. Keep it tight and skip recaps.');
+ if(sp==='slow')L.push('- I take my time reading. Use short sentences and one idea per line.');
+ const ld=g('lead');
+ if(ld==='visual')L.push('- Lead with a visual, then the words.');
+ if(ld==='words')L.push('- Lead with words. Add a visual only when it saves me reading.');
+ if(ld==='both')L.push('- Give me a short visual and short words side by side.');
+ const mp=all('map');
+ if(mp.includes('num'))L.push('- When the answer is numbers I track, use a dashboard.');
+ if(mp.includes('walk'))L.push('- When you walk me through something, use slides.');
+ const d=g('read');
+ if(d==='dys')L.push('- I have dyslexia. Use short sentences, bullet points and bold key words. No dense paragraphs. Use plain, easy-to-read fonts in anything visual.');
+ const other=(f.querySelector('[name=read_other]')||{}).value||'';
+ if(d==='other'&&other.trim())L.push('- Reading note: '+other.trim());
+ return L.join('\n');
+}
+function prefOk(f){
+ const has=n=>!f.querySelector(`[name=${n}]`)||!!f.querySelector(`[name=${n}]:checked`);
+ const other=f.querySelector('[name=read_other]');
+ const otherOk=!(f.querySelector('[name=read][value=other]:checked'))||(other&&other.value.trim().length>=3);
+ return has('structure')&&has('vis')&&has('speed')&&has('lead')&&has('read')&&otherOk;
+}
+
+/* take-home kit */
+const KIT=[
+ ['My answer-style block','Lesson 1. Give this to your agent as a standing instruction.',()=>val('l1_block')],
+ ['My work order','Lesson 2. Your master prompt: paste it at the top of a job.',()=>WO.some(([id])=>val(id))?master():''],
+ ['My brief protocol','Lesson 2. A standing rule to build into your setup.',()=>S.get('pass:l2')?PROTOCOL:'']
+];
+
+document.addEventListener('DOMContentLoaded',()=>{
+ if('scrollRestoration' in history)history.scrollRestoration='manual';
+ window.scrollTo(0,0);
+
+ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',()=>{
+  copyText(document.getElementById(b.dataset.copy).textContent,b)}));
+
+ /* quizzes */
+ document.querySelectorAll('.quiz').forEach(qz=>{
+  const id=qz.dataset.quiz,ans=qz.dataset.answer,fb=qz.querySelector('.fb'),st=qz.querySelector('.st');
+  const bs=[...qz.querySelectorAll('.choice')];
+  const win=(b,silent)=>{
+   qz.dataset.ok='1';qz.classList.add('done');bs.forEach(x=>x.classList.remove('wrong'));b.classList.add('right');
+   fb.className='fb yes';fb.textContent='Right. '+b.dataset.why;st.textContent='Passed';
+   const old=qz.querySelector('.backbtn');if(old)old.remove();
+   if(!silent){S.set('q:'+id,'ok');update()}
+  };
+  bs.forEach(b=>b.addEventListener('click',()=>{
+   if(qz.dataset.ok)return;
+   if(b.dataset.k===ans){win(b);return}
+   b.classList.add('wrong');fb.className='fb no';fb.textContent=(b.dataset.back?'':'Not this one. ')+b.dataset.why+(b.dataset.back?'':' Try again.');
+   if(b.dataset.back&&!qz.querySelector('.backbtn')){
+    const bb=document.createElement('button');bb.type='button';bb.className='backbtn';bb.textContent='Back to card '+b.dataset.back;
+    bb.addEventListener('click',()=>{const d=document.querySelectorAll('#locks > details')[+b.dataset.back-1];d.open=true;d.scrollIntoView({behavior:'smooth'});b.classList.remove('wrong');bb.remove();fb.textContent=''});
+    fb.after(bb);
+   }
+  }));
+  if(S.get('q:'+id)==='ok'){const b=bs.find(x=>x.dataset.k===ans);if(b)win(b,true)}
+ });
+
+ /* typed answers */
+ document.querySelectorAll('[data-save]').forEach(el=>{
+  const id=el.dataset.save,min=+(el.dataset.min||1),wrap=el.closest('.field'),st=wrap.querySelector('.frow span');
+  const v=S.get('f:'+id);if(v!==null)el.value=v;
+  const check=()=>{const ok=el.value.trim().length>=min;wrap.classList.toggle('ok',ok);el.dataset.ok=ok?'1':'';
+   st.textContent=ok?'Saved on this phone':(el.value.trim()?'Saved, keep going':'Not answered yet');return ok};
+  el.addEventListener('input',()=>{S.set('f:'+id,el.value);check();update()});
+  wrap.querySelector('button').addEventListener('click',e=>copyText(el.value.trim()?el.value:'(empty)',e.currentTarget));
+  check();
+ });
+
+ /* preference questionnaire */
+ const pf=document.getElementById('prefs');
+ if(pf){
+  let saved={};try{saved=JSON.parse(S.get('prefs')||'{}')}catch(e){}
+  pf.querySelectorAll('input').forEach(i=>{const s=saved[i.name+'='+i.value];if(i.type==='text'){if(saved[i.name])i.value=saved[i.name]}else if(s)i.checked=true});
+  const sync=()=>{
+   const o={};pf.querySelectorAll('input').forEach(i=>{if(i.type==='text')o[i.name]=i.value;else if(i.checked)o[i.name+'='+i.value]=1});
+   S.set('prefs',JSON.stringify(o));
+   const ok=prefOk(pf),txt=prefBlock(pf);
+   pf.dataset.ok=ok?'1':'';
+   document.getElementById('prefblock').textContent=ok?txt:'Answer every question above and your block appears here.';
+   if(ok)S.set('f:l1_block',txt);
+   pf.closest('.try').classList.toggle('done',ok);
+   pf.closest('.try').querySelector('.st').textContent=ok?'Block built, saved':'Answer all';
+  };
+  pf.addEventListener('change',()=>{sync();update()});pf.addEventListener('input',()=>{sync();update()});
+  sync();
+ }
+
+ /* group copy (work order) and live blocks */
+ document.querySelectorAll('[data-copygroup]').forEach(b=>b.addEventListener('click',()=>copyText(workOrder(),b)));
+ const live=()=>{const m=document.getElementById('master');if(m)m.textContent=master();const p=document.getElementById('protocol');if(p)p.textContent=PROTOCOL};
+
+ /* cards, meter, unlock */
+ const ds=[...document.querySelectorAll('#locks > details')];
+ const done=c=>[...c.querySelectorAll('.quiz,[data-save][data-min],#prefs')].every(x=>x.dataset.ok);
+ function update(){
+  live();
+  if(!ds.length)return;
+  let n=0;
+  ds.forEach(d=>{
+   const ok=done(d);d.classList.toggle('got',ok);if(ok)n++;
+   d.querySelectorAll('.try.typed').forEach(t=>t.classList.toggle('done',[...t.querySelectorAll('[data-save][data-min]')].every(f=>f.dataset.ok)));
+  });
+  const t=ds.length,all=n===t;
+  document.getElementById('tcount').textContent=n+' / '+t;
+  document.getElementById('tbar').style.width=(n/t*100)+'%';
+  document.getElementById('trophy').classList.toggle('plat',all);
+  document.getElementById('plat').classList.toggle('on',all);
+  const nb=document.getElementById('nextbtn'),nn=document.getElementById('nextnote');
+  if(nb){nb.classList.toggle('locked',!all);nb.classList.toggle('open',all);nb.setAttribute('aria-disabled',all?'false':'true');
+   nb.tabIndex=all?0:-1;nb.querySelector('.ico').textContent=all?'→':'🔒';
+   nn.textContent=all?'Passed. Tap to go on.':'Pass '+(t-n)+' more card'+(t-n===1?'':'s')+' to unlock.'}
+  if(all)S.set('pass:'+document.body.dataset.lesson,'1');
+ }
+
+ /* kit page */
+ const kit=document.getElementById('kit');
+ if(kit){
+  const items=KIT.map(([t,s,fn],i)=>{const v=fn();return{t,s,v,i}});
+  kit.innerHTML='';
+  items.forEach(it=>{
+   const d=document.createElement('div');d.className='kitem'+(it.v?'':' empty');
+   d.innerHTML=`<div class="copyhead"><b></b><button type="button">Copy</button></div><p class="src"></p><pre class="tmpl"></pre>`;
+   d.querySelector('b').textContent=it.t;d.querySelector('.src').textContent=it.s;
+   d.querySelector('pre').textContent=it.v||'Not built yet. Finish the lesson to fill this in.';
+   d.querySelector('button').addEventListener('click',e=>copyText(it.v||'',e.currentTarget));
+   kit.appendChild(d);
+  });
+  document.getElementById('copyall').addEventListener('click',e=>copyText(items.filter(i=>i.v).map(i=>'== '+i.t+' ==\n'+i.v).join('\n\n'),e.currentTarget));
+ }
+
+ document.querySelectorAll('[data-passed]').forEach(el=>{if(S.get('pass:'+el.dataset.passed))el.textContent='Passed'});
+
+ const rs=document.getElementById('reset');
+ if(rs)rs.addEventListener('click',()=>{
+  if(rs.dataset.armed){S.clear();location.href='lesson1.html'}
+  else{rs.dataset.armed='1';rs.textContent='Tap again to erase every answer';setTimeout(()=>{delete rs.dataset.armed;rs.textContent='Start over'},4000)}
+ });
+
+ update();
+});
+})();
+</script>
+</body>
+</html>

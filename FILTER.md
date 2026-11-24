@@ -1,19 +1,19 @@
-# SP1 Lessons 1-2: 4-step filter (2026-11-24)
-Source: Ben AI brief YT-20261123-81Jg17dQz1A (Tank/Gemini), sections [08:29] digestibility and [02:26] manager brief.
+# SP1 Lessons 1-2, v2 (2026-11-24)
+Source: Ben AI video (YT 81Jg17dQz1A), brief by Tank. Two versions:
+- creator/ : only what the video teaches.
+- didier/  : same lessons plus Didier's additions, each in a yellow "Didier's addition" box.
 
-## Lesson 1: fast digestion
-- Learn: answers balloon (3,200 vs 600 words); reviewing is the bottleneck; fixes are a 4-part top-down style and visuals.
-- Decide: KEEP 4-part style block, visual-per-output table, install options (A/B/Wildcard), timed drill. CUT the "full game plan" roadmap card (Lessons 3-7 are out of scope, and the end button now does that job). CUT the Motion line (not on the account). The /output-style claim stays only as Option B with "check it exists first".
-- Our edge: Didier already reads one-page HTML lessons and gets PIGEON handoffs, so the Wildcard (reorder PIGEON into 4 parts) is his own system.
-- Steal: "Needs you" on top; the style block; ask for a visual, not prose.
-- New: wrong vs right side by side (prose dump vs top-down); a quiz on every card; typed real work (install target, before-time, rewrite of a real report in 4 parts).
+## Changes by fix number
+1. Every card now has a learning part, a pink TEST divider, then the test. Examples a question uses sit inside the test block.
+2. Removed all personal work from L1 cards 4-6 (handoff reports, timing yourself, your own report, PIGEON, install options).
+3. New L1 card 4: questionnaire that writes an answer-style block. Creator: answer structure + visual formats the video names. Didier adds reading speed, words vs visuals, dashboard/slides matching, reading difficulty (dyslexia or other).
+4. New L1 card 5: paste the block, have the agent redo one answer, "Did you notice the difference?" No shows why and a "Back to card 4" button.
+5. L1 card 6 rebuilt: rewrite a sample bakery-site answer in four parts, then compare with a good version.
+6. Template boxes (blank work order, interview prompt, blocks) now use the page font at body size.
+7. L2 card 6: "Copy all four, with titles" button under the work order.
+8. L2 end: two copy boxes, Master prompt (filled work order) and Protocol (standing rule).
+9. "Finish the lesson. Everything you write is waiting for you at the end." near every fill-in.
+Art piece: finish.html in each version collects the answer-style block, work order and protocol, each with Copy, plus Copy all.
 
-## Lesson 2: manager brief
-- Learn: top users decide the plan up front (video: 70% plan / 20% execution); 4-part brief; calm guardrails; self-checks (Boris Cherny); interview-me when unclear.
-- Decide: KEEP all four parts, interview prompt, blank template, drill. CUT the "70% of the work is here" number from the stamp (unverified; stamp now says "Most of the work is here", number kept in the small unverified line). CUT the "BAY launch" wording in What to do (generic "next real job" so it can become the customer template).
-- Our edge: Didier's own job brief for these lessons used exactly these four headings.
-- Steal: the 4-line template and the interview prompt.
-- New: a quiz on every concept card, typed 4-line work order for his own next job, typed "first task this brief goes to", and "Copy all" that assembles every answer from both lessons.
-
-## Parked, not cut (for Lessons 3-7)
-Feedback loop [05:28], never-get-to list [12:03], decision visibility [13:50], lean setup [16:48].
+## Also removed (guardrail: nothing personal, creator adds nothing)
+Auto Sin Rollo example and Silerio examples -> general bakery website. 150-word cap (was an addition by Claude, not the video or Didier). Visual-by-job table moved to Didier version only.
