@@ -23,7 +23,11 @@ def typed(intro, *fields, head='Try it now', extra=''):
     return (f'<div class="try typed"><div class="tryhead">{head}<span class="st">Saved as you type</span></div>'
             f'<p class="q">{E(intro)}</p>{LATER}{"".join(fields)}{extra}</div>')
 
-def card(n, title, learn, test):
+def card(n, title, learn, test, gate=False):
+    if gate:  # the test stays closed until the learner opens it from the lesson part
+        return (f'<details><summary><span class="lk">{n}</span>{E(title)}</summary><div class="body">'
+                f'<div class="learn">{learn}<button type="button" class="starttest">I\'m ready, open the test</button></div>'
+                f'<div class="test shut"><div class="testdiv">Test</div>{test}</div></div></details>')
     return (f'<details><summary><span class="lk">{n}</span>{E(title)}</summary><div class="body">'
             f'<div class="learn">{learn}</div><div class="testdiv">Test</div><div class="test">{test}</div></div></details>')
 

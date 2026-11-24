@@ -123,3 +123,25 @@ pre.tmpl{font:16px/1.55 "Hanken Grotesk",system-ui,sans-serif}
 .pick a{display:block;padding:18px;border:1px solid var(--line);border-radius:10px;background:#0c2a49;color:var(--ink);text-decoration:none}
 .pick a b{font-size:20px;display:block;margin-bottom:4px}
 .pick a:hover{border-color:var(--sky)}
+/* v3: Lesson 1 game layer */
+.mini{flex:none;width:44px;height:32px;color:var(--sky)}
+.prefs label.opt2 .mini{margin-top:-4px}
+.shut{display:none!important}
+.starttest{margin-top:14px;width:100%;border-color:var(--pink);color:var(--pink);font-weight:800}
+.speakrow{display:flex;justify-content:flex-end;margin:-4px 0 8px}
+.speak{min-height:38px;padding:0 12px;font-size:14px}
+.soundbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:-4px 0 16px}
+.soundbar button[aria-pressed=false]{border-color:var(--line);color:var(--mute)}
+.match .mcols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.match h4{margin:0 0 6px;font-size:13px;color:var(--mute);font-weight:600}
+.mjob,.mvis{display:flex;align-items:center;gap:8px;width:100%;text-align:left;min-height:52px;padding:8px 10px;margin-bottom:8px;border-color:var(--line);color:var(--ink);font-weight:400;font-size:14px;line-height:1.3}
+.mjob.sel{border-color:var(--sky);background:#0f3358;font-weight:600}
+.mjob.ok,.mvis.ok{border-color:var(--green);background:#0d3a2c;color:#c9f5e2}
+.mjob.bad,.mvis.bad{border-color:var(--red);background:#2a1622}
+.mjob small{display:block;color:var(--green);font-weight:600;font-size:12px}
+.mvis.drop{outline:2px dashed var(--sky)}
+.cmp{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-top:12px}
+.cmp pre{font:13px/1.45 "Hanken Grotesk",sans-serif;padding:10px}
+.cmp .copyhead{margin:0 0 6px}
+.cmp .copyhead button{min-height:36px;padding:0 10px;font-size:13px}
+.retake{margin-top:12px;width:100%}

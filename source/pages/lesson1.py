@@ -1,5 +1,7 @@
 from build import quiz, field, typed, card, nextblock, E, LATER
 from pages.common import mine, head, credit
+from build import card as _card
+card = lambda *a, **k: _card(*a, gate=True, **k)  # Lesson 1: test opens after the lesson part
 TITLE = 'Lesson 1 Fast Digestion'
 LESSON = 'l1'
 
@@ -36,27 +38,55 @@ MESSY = ('I went through the bakery site and fixed the menu layout, which took a
 GOOD = ('1. Needs you: which email should orders go to?\n2. Goal met? Partly. The menu loads faster; the order form doesn\'t send yet.\n'
         '3. Short path: you send the email, I connect the form, then test one order.\n4. Errors and why: the cake photos may look blurry after shrinking. Not checked yet.')
 
-VIS = ['One-page HTML page', 'Docs', 'Dashboards', 'Whiteboards', 'Sheets', 'Slides', 'Motion (short animated explainers)']
+_SV = '<svg class="mini" viewBox="0 0 44 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">{}</svg>'
+MINI = {
+ 'page': _SV.format('<rect x="3" y="2" width="38" height="28" rx="3"/><path d="M3 8h38"/><circle cx="7" cy="5" r=".8" fill="currentColor"/><rect x="8" y="12" width="14" height="6" rx="1" fill="currentColor" stroke="none" opacity=".6"/><path d="M26 13h10M26 17h8M8 23h28"/>'),
+ 'doc': _SV.format('<path d="M12 2h15l6 6v22H12z"/><path d="M27 2v6h6M16 13h13M16 17h13M16 21h13M16 25h8"/>'),
+ 'dash': _SV.format('<rect x="3" y="2" width="38" height="28" rx="3"/><rect x="7" y="6" width="12" height="8" rx="1"/><rect x="23" y="6" width="14" height="8" rx="1"/><path d="M9 26v-4M14 26v-7M19 26v-5M24 26v-9M29 26v-6M34 26v-8"/>'),
+ 'board': _SV.format('<rect x="2" y="3" width="11" height="8" rx="2"/><rect x="31" y="3" width="11" height="8" rx="2"/><rect x="16" y="21" width="12" height="8" rx="2"/><path d="M13 7h18M8 11l9 10M36 11l-9 10"/>'),
+ 'sheet': _SV.format('<rect x="3" y="3" width="38" height="26" rx="2"/><path d="M3 10h38M3 16h38M3 22h38M14 3v26M26 3v26"/>'),
+ 'slides': _SV.format('<rect x="3" y="4" width="38" height="22" rx="2"/><path d="M9 11h18M9 16h12"/><circle cx="18" cy="29.5" r="1" fill="currentColor"/><circle cx="22" cy="29.5" r="1" fill="currentColor"/><circle cx="26" cy="29.5" r="1" fill="currentColor"/>'),
+ 'motion': _SV.format('<rect x="3" y="4" width="38" height="24" rx="2"/><path d="M3 9h38M3 23h38M9 4v5M17 4v5M25 4v5M33 4v5M9 23v5M17 23v5M25 23v5M33 23v5"/><path d="M19 12v8l7-4z" fill="currentColor"/>'),
+}
+VIS = [('One-page HTML page', 'page'), ('Docs', 'doc'), ('Dashboards', 'dash'), ('Whiteboards', 'board'), ('Sheets', 'sheet'), ('Slides', 'slides'), ('Motion (short animated explainers)', 'motion')]
+JOBS = [('dash', 'Numbers you watch'), ('sheet', 'Rows to sort or fill'), ('doc', 'A plan to keep'), ('board', 'A process'), ('slides', 'A walkthrough'), ('page', 'A one-off report')]
+VNAME = {'dash': ('Dashboard', 'numbers you watch'), 'sheet': ('Sheet', 'rows to sort or fill'), 'doc': ('Doc', 'a plan to keep'),
+         'board': ('Whiteboard', 'a process'), 'slides': ('Slides', 'a walkthrough'), 'page': ('One-page page', 'a one-off report')}
+TEST_PROMPT = 'Test run. I just added new standing instructions for how I want your answers. Do not start any new work and do not use any tools. 1. Find the last short answer you gave me in this chat. If there is none, use this question instead: What are the three most useful things you can help me with? 2. Show it as BEFORE: the answer the old way, cut to 5 lines at most. 3. Show it as AFTER: the same answer, following my new standing instructions exactly. 4. End with one line: what changed between the two. Keep the whole reply under 200 words.'
 
-def opt(kind, name, value, label):
-    return f'<label class="opt2"><input type="{kind}" name="{name}" value="{E(value)}"><span>{E(label)}</span></label>'
+def match():
+    js = ''.join(f'<button type="button" class="mjob" draggable="true" data-m="{k}" data-label="{E(t)}"><span>{E(t)}<small></small></span></button>' for k, t in JOBS)
+    vs = ''.join(f'<button type="button" class="mvis" data-v="{k}" data-what="{E(VNAME[k][1])}">{MINI[k]}<span>{VNAME[k][0]}</span></button>' for k, _ in sorted(JOBS, key=lambda x: VNAME[x[0]][0]))
+    return ('<div class="match" id="match"><div class="tryhead" style="margin-top:4px">Match<span class="st"></span></div>'
+            '<p class="q" style="font-weight:400">Tap a job, then tap the visual that fits it. On a computer you can also drag a job onto a visual.</p>'
+            f'<div class="mcols"><div><h4>Job</h4>{js}</div><div><h4>Visual</h4>{vs}</div></div><p class="fb" aria-live="polite"></p></div>')
+
+def opt(kind, name, value, label, pic='', tag=''):
+    return f'<label class="opt2"><input type="{kind}" name="{name}" value="{E(value)}">{pic}<span>{tag}{E(label)}</span></label>'
 
 def prefs(v):
-    f = ('<fieldset><legend>1. How should answers be built?</legend>' +
-         opt('radio', 'structure', 'four', 'Top-down in four parts: needs me, goal met?, short path, errors and why') +
-         opt('radio', 'structure', 'concise', 'Just keep it concise') + '</fieldset>'
-         '<fieldset><legend>2. Which visuals do you want instead of long prose? Pick any.</legend>' +
-         ''.join(opt('checkbox', 'vis', x, x) for x in VIS) + '</fieldset>')
+    tag = '<span class="mine" style="margin:0 6px 0 0">Didier\'s addition</span>' if v == 'didier' else ''
+    q1 = (opt('radio', 'structure', 'four', 'Top-down in four parts: needs me, goal met?, short path, errors and why') +
+          opt('radio', 'structure', 'concise', 'Just keep it concise'))
+    if v == 'didier':
+        q1 += (opt('radio', 'structure', 'bottom', 'Bottom line first, then the details', tag=tag) +
+               opt('radio', 'structure', 'qa', 'Question and answer', tag=tag))
+    f = ('<fieldset><legend>1. How should answers be built?</legend>' + q1 + '</fieldset>'
+         '<fieldset><legend>2. Which visuals do you want instead of a long block of text? Pick any.</legend>' +
+         ''.join(opt('checkbox', 'vis', x, x, pic=MINI[k]) for x, k in VIS) + '</fieldset>')
     if v == 'didier':
         f += mine(v,
             '<fieldset><legend>3. How do you read?</legend>' +
-            opt('radio', 'speed', 'fast', 'Fast. I skim.') + opt('radio', 'speed', 'slow', 'I take my time.') + '</fieldset>'
-            '<fieldset><legend>4. Words or visuals first?</legend>' +
-            opt('radio', 'lead', 'visual', 'Visual first') + opt('radio', 'lead', 'words', 'Words first') + opt('radio', 'lead', 'both', 'Both, side by side') + '</fieldset>'
-            '<fieldset><legend>5. Match the visual to the job? Pick any.</legend>' +
-            opt('checkbox', 'map', 'num', 'Numbers I track go on a dashboard') + opt('checkbox', 'map', 'walk', 'Walkthroughs go on slides') + '</fieldset>'
-            '<fieldset><legend>6. Anything that makes reading harder?</legend>' +
-            opt('radio', 'read', 'none', 'No') + opt('radio', 'read', 'dys', 'Dyslexia') + opt('radio', 'read', 'other', 'Something else') +
+            opt('radio', 'speed', 'fast', 'Fast. I skim.') + opt('radio', 'speed', 'slow', 'I take my time.') +
+            opt('radio', 'speed', 'both', 'I do both, depending on the day') + '</fieldset>'
+            '<fieldset><legend>4. How do you like it laid out?</legend>' +
+            opt('radio', 'lead', 'visual', 'Visual first') + opt('radio', 'lead', 'words', 'Words first') +
+            opt('radio', 'lead', 'both', 'Both, side by side') + opt('radio', 'lead', 'bullets', 'I prefer bullet points') + '</fieldset>'
+            '<fieldset><legend>5. Match each job to its visual</legend>' + match() + '</fieldset>'
+            '<fieldset><legend>6. Anything that makes reading harder? Pick any.</legend>' +
+            opt('checkbox', 'read', 'none', 'No') + opt('checkbox', 'read', 'dys', 'Dyslexia') +
+            opt('checkbox', 'read', 'color', 'Color blindness') + opt('checkbox', 'read', 'small', 'Small text') +
+            opt('checkbox', 'read', 'long', 'Long paragraphs') + opt('checkbox', 'read', 'other', 'Something else') +
             '<input type="text" name="read_other" placeholder="Tell your agent in a few words" autocomplete="off"></fieldset>')
     return f'<form id="prefs" class="prefs" onsubmit="return false">{f}</form>'
 
@@ -104,12 +134,19 @@ def body(v, vname):
         'You give that block to your agent once, as a standing instruction, and every answer after that follows it.</p>',
         '<div class="try"><div class="tryhead">Try it now<span class="st">Answer all</span></div>' + LATER + prefs(v) +
         '<div class="copyhead"><b>Your block</b><button type="button" data-copy="prefblock">Copy</button></div>'
-        '<pre id="prefblock" class="tmpl"></pre></div>')
+        '<pre id="prefblock" class="tmpl"></pre>'
+        '<button type="button" class="retake" id="retake">Retake and compare</button>'
+        '<p class="src" style="margin-top:6px">Saves this block as Version 1 and clears the questions so you can build Version 2.</p>'
+        '<div class="cmp shut" id="compare">'
+        '<div><div class="copyhead"><b>Version 1</b><button type="button" data-copy="v1block">Copy</button></div><pre id="v1block"></pre></div>'
+        '<div><div class="copyhead"><b>Version 2</b><button type="button" data-copy="v2block">Copy</button></div><pre id="v2block"></pre></div>'
+        '</div></div>')
 
     c5 = card(5, 'Test your block',
         '<ol><li>Copy your block from card 4.</li>'
         '<li>Paste it where your agent keeps standing instructions (project instructions, custom instructions, or a CLAUDE.md file).</li>'
-        '<li>Ask it to redo one answer it already gave you, then put the old and new answers side by side.</li></ol>',
+        '<li>In the same chat, send it the test prompt below. It shows you one answer before and after your block.</li></ol>'
+        f'<div class="copyhead"><b>Test prompt</b><button type="button" data-copy="testprompt">Copy</button></div><pre id="testprompt" class="tmpl">{E(TEST_PROMPT)}</pre>',
         quiz('l1q5', 'Did you notice the difference?', 'yes', [
             ('yes', 'Yes', 'Your block works. Leave it on.'),
             ('no', 'No', 'Then your block needs fixing. Go back to card 4, change your answers, paste the new block and try again.', 4)],
@@ -133,7 +170,8 @@ def body(v, vname):
     return top + f'''<section class="band alt">
 <div class="wrap">
 <h2>Unlock the lesson</h2>
-<p class="hint">Each card has a learning part, then a test. Pass all six to unlock Lesson 2.</p>
+<p class="hint">Each card has a learning part, then a test that opens when you are ready. Pass all six to unlock Lesson 2.</p>
+<div class="soundbar"><button type="button" id="soundtoggle" aria-pressed="true">Sound: on</button><span class="src">Read aloud on every card, and a chime for each answer.</span></div>
 <div class="locks" id="locks">
 {c1}{c2}{c3}{c4}{c5}{c6}
 </div>
