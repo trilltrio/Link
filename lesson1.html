@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lesson 1 Fast Digestion</title>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#0a2540;--bg2:#0f2f52;--ink:#f4f8fc;--mute:#a9c3da;--sky:#8fd3ff;--pink:#ff5c8a;--line:#24507a;--paper:#f6f9fc;--pink2:#2a0612;--green:#3ddc97;--green2:#06281a;--red:#ff6b6b}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 "Hanken Grotesk",system-ui,sans-serif;overflow-x:clip}
+.band{padding-block:clamp(24px,4vw,52px);padding-inline:max(5vw,16px)}
+.wrap{max-width:1100px;margin:0 auto}
+.crumb{color:var(--mute);font-size:14px;font-weight:600;margin-bottom:8px}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+h1{font-weight:300;font-size:clamp(32px,5vw,52px);line-height:1.05;letter-spacing:-.02em;margin:0;text-wrap:balance}
+h2{font-weight:600;font-size:clamp(22px,3vw,30px);line-height:1.1;margin:0 0 14px}
+p{margin:0 0 12px;max-width:68ch}
+.trophy{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;white-space:nowrap}
+.meter{width:140px;height:10px;border-radius:99px;background:#123a63;overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:var(--pink);transition:width .4s}
+.trophy.plat .meter i{background:linear-gradient(90deg,#e8eef5,#8fd3ff,#e8eef5)}
+.bars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:22px}
+.bar{background:#0c2a49;border:1px solid var(--line);border-top:4px solid var(--sky);border-radius:8px;padding:14px}
+.bar:nth-child(4){border-top-color:var(--pink)}
+.bar small{display:block;color:var(--mute);font-size:13px;font-weight:600;margin-bottom:4px}
+.bar div{font-size:16px;font-weight:600;line-height:1.35}
+.alt{background:var(--bg2)}
+.hint{color:var(--mute);font-size:15px;margin-bottom:16px}
+.locks{display:grid;gap:12px}
+details{background:#0c2a49;border:1px solid var(--line);border-radius:8px}
+details[open]{border-color:var(--sky)}
+summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:14px;padding:14px 16px;min-height:56px;font-weight:600;font-size:17px}
+summary::-webkit-details-marker{display:none}
+summary:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.lk{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--line);color:var(--mute);font-size:14px}
+details.got .lk{background:var(--pink);border-color:var(--pink);color:var(--pink2)}
+.body{padding:0 16px 16px 60px}
+.src{color:var(--mute);font-size:14px}
+.copyhead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:8px 0}
+button{font:600 15px "Hanken Grotesk",sans-serif;min-height:44px;padding:0 18px;border-radius:6px;border:1px solid var(--sky);background:transparent;color:var(--sky);cursor:pointer}
+button:hover{background:#123a63}
+button:focus-visible,a:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+pre{overflow-x:auto;background:#06192c;border:1px solid var(--line);border-radius:8px;padding:14px;margin:0;font:14px/1.6 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--mute);font-weight:600;font-size:14px}
+td:first-child{font-weight:600}
+.opts{display:grid;gap:10px}
+.opt{border:1px solid var(--line);border-radius:6px;padding:12px}
+.tag{display:inline-block;font-size:13px;font-weight:600;padding:2px 8px;border-radius:99px;background:#123a63;color:var(--sky);margin-bottom:6px}
+.tag.w{background:var(--pink);color:var(--pink2)}
+.pass{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:10px;margin-top:10px}
+.pass div{border-radius:6px;padding:12px;font-size:15px}
+.pass .ok{border:1px solid var(--sky)}
+.pass .no{border:1px solid var(--pink)}
+ol{padding-left:1.2em;margin:6px 0}
+li{margin-bottom:6px}
+/* wrong (red) vs right (blue) */
+.vs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:10px;margin:8px 0 4px}
+.vs div{border-radius:6px;padding:10px 12px;font-size:15px}
+.vs .bad{border:1px solid var(--red);background:#2a1622}
+.vs .good{border:1px solid var(--sky);background:#0f3358}
+.vs b{display:block;font-size:13px;margin-bottom:2px}
+.vs .bad b{color:var(--red)}
+.vs .good b{color:var(--sky)}
+/* try it now */
+.try{margin-top:14px;border:1px dashed var(--sky);border-radius:8px;padding:14px;background:#0a2240}
+.try.done{border-style:solid;border-color:var(--green)}
+.tryhead{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--sky);margin-bottom:6px}
+.try.done .tryhead{color:var(--green)}
+.tryhead .st{font-size:12px;letter-spacing:0;text-transform:none;font-weight:600;color:var(--mute)}
+.try.done .tryhead .st{color:var(--green)}
+.q{font-weight:600;margin-bottom:10px}
+.choices{display:grid;gap:8px}
+.choice{text-align:left;width:100%;min-height:48px;padding:10px 14px;border-color:var(--line);color:var(--ink);font-weight:400;line-height:1.4}
+.choice.wrong{border-color:var(--red);background:#2a1622;color:#ffd1d1}
+.choice.right{border-color:var(--green);background:var(--green);color:var(--green2);font-weight:600}
+.fb{margin:10px 0 0;font-size:15px;min-height:1px}
+.fb.no{color:#ffb3b3}
+.fb.yes{color:var(--green)}
+.field{display:grid;gap:6px;margin-top:10px}
+.field label{font-weight:600;font-size:15px}
+.field label small{display:block;font-weight:400;color:var(--mute);font-size:14px}
+textarea,input[type=text]{width:100%;font:16px/1.45 "Hanken Grotesk",sans-serif;color:var(--ink);background:#06192c;border:1px solid var(--line);border-radius:6px;padding:10px 12px}
+textarea{min-height:76px;resize:vertical}
+.field.ok textarea,.field.ok input{border-color:var(--green)}
+.frow{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.frow span{font-size:13px;color:var(--mute)}
+.field.ok .frow span{color:var(--green)}
+.frow button{min-height:40px;padding:0 14px;font-size:14px}
+/* next button */
+.next{margin-top:22px}
+.nextbtn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:68px;border-radius:10px;font:800 clamp(18px,2.6vw,22px) "Hanken Grotesk",sans-serif;text-decoration:none;text-align:center;padding:12px 18px}
+.nextbtn.locked{background:#123a63;color:var(--mute);border:2px dashed var(--line);pointer-events:none}
+.nextbtn.open{background:var(--pink);color:var(--pink2);border:2px solid var(--pink)}
+.nextnote{text-align:center;color:var(--mute);font-size:14px;margin-top:8px}
+.plat{display:none;margin-top:18px;padding:16px;border-radius:8px;background:linear-gradient(90deg,#dfe7f0,#8fd3ff);color:#0a2540;font-weight:600}
+.plat.on{display:block}
+.saved{margin-top:22px}
+.saved pre{max-height:360px;overflow:auto}
+@media(max-width:760px){.bars{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.body{padding-left:16px}table{font-size:13px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body data-lesson="l1" id="top">
+<section class="band">
+<div class="wrap">
+<div class="crumb">Study Plan 1 · Lesson 1 of 2</div>
+<div class="top">
+<h1>Lesson 1: read your agents in under a minute</h1>
+<div class="trophy" id="trophy"><span id="tcount">0 / 6</span><div class="meter"><i id="tbar"></i></div></div>
+</div>
+<style>
+.plate{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,.8fr) minmax(0,1.4fr);gap:clamp(14px,3vw,36px);align-items:end;background:#0c2a49;border:1px solid var(--line);border-radius:10px;padding:clamp(16px,3vw,28px)}
+.col{display:flex;flex-direction:column}
+.txt{width:100%;border-radius:4px;background:repeating-linear-gradient(to bottom,var(--line) 0 6px,transparent 6px 13px);transform-origin:bottom;animation:grow 1.2s ease-out both}
+.txt.big{background:repeating-linear-gradient(to bottom,#3a6a98 0 6px,transparent 6px 13px)}
+@keyframes grow{from{transform:scaleY(.05)}to{transform:scaleY(1)}}
+.fn{font-weight:300;font-size:clamp(30px,4.5vw,50px);line-height:1;margin-top:10px;white-space:nowrap}
+.fl{color:var(--mute);font-size:14px}
+.stack{display:grid;gap:8px}
+.slot{border-radius:6px;padding:11px 14px;background:#123a63;border:1px solid var(--line)}
+.slot b{display:block;font-size:17px}
+.slot span{color:var(--mute);font-size:14px}
+.slot.p1{background:var(--pink);border-color:var(--pink);color:var(--pink2)}
+.slot.p1 span{color:#4a0d20}
+@media(max-width:760px){.plate{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.plate .col:last-child{grid-column:1/-1}}
+</style>
+<div class="plate" role="img" aria-label="A 600-word answer beside a 3,200-word answer, and the 4-part stack that replaces them">
+<div class="col"><div class="txt" style="height:calc(min(40vw,320px)*600/3200)"></div><div class="fn">600</div><div class="fl">words, typical answer</div></div>
+<div class="col"><div class="txt big" style="height:min(40vw,320px)"></div><div class="fn">3,200</div><div class="fl">words, heavy user's answer</div></div>
+<div class="col"><div class="stack">
+<div class="slot p1"><b>1. Needs you</b><span>Stop here if that's all you need</span></div>
+<div class="slot"><b>2. Goal met?</b><span>Yes, partly or no, with proof</span></div>
+<div class="slot"><b>3. Short path</b><span>Next 1 to 3 moves</span></div>
+<div class="slot"><b>4. Errors and why</b><span>What broke, what's a guess</span></div>
+</div><div class="fl" style="margin-top:10px">Same work, read top-down</div></div>
+</div>
+<div class="bars">
+<div class="bar"><small>What it is</small><div>Every agent answer comes in 4 parts, with what needs you on top.</div></div>
+<div class="bar"><small>Why it matters</small><div>Reading the output is the slow part, not the agent's work.</div></div>
+<div class="bar"><small>What to do</small><div>Paste the style block into your project instructions. Ask for visuals, not prose.</div></div>
+<div class="bar"><small>How you know</small><div>You find what needs you in under 60 seconds.</div></div>
+</div>
+</div>
+</section>
+<section class="band alt">
+<div class="wrap">
+<h2>Unlock the lesson</h2>
+<p class="hint">Open each card and pass its Try it now. Pass all six for platinum and Lesson 2. Your answers save on this phone as you type.</p>
+<div class="locks" id="locks">
+<details><summary><span class="lk">1</span>Where the numbers come from</summary><div class="body">
+<p>Ben AI's video cites two Anthropic studies. Heavy users get answers of about 3,200 words versus about 600. Staff spend about half their week reviewing agent output, while agents sit idle about 80% of the time.</p>
+<p class="src">These are the video's numbers and were not checked against the raw studies.</p><div class="try quiz" data-quiz="l1q1" data-answer="b"><div class="tryhead">Try it now<span class="st">Pick one</span></div><p class="q">Per the video, where does the time actually go when you work with agents?</p><div class="choices"><button type="button" class="choice" data-k="a" data-why="Per the video, agents sit idle about 80% of the time.">The agent doing the work</button><button type="button" class="choice" data-k="b" data-why="Staff spend about half their week reviewing. Reading is the slow part.">You reading and reviewing what it wrote</button><button type="button" class="choice" data-k="c" data-why="The prompt matters (that is Lesson 2), but here the slow part is review.">Writing the prompt</button><button type="button" class="choice" data-k="d" data-why="The video never names waiting as the problem. Review is.">Waiting for the model to answer</button></div><p class="fb" aria-live="polite"></p></div></div></details><details><summary><span class="lk">2</span>The style block, ready to paste</summary><div class="body">
+<p>Same report, two ways. The left one makes you read everything to find the one thing it needs from you.</p>
+<div class="vs"><div class="bad"><b>Wrong: prose dump</b>I started by reviewing the files, then I updated the header, then I tried the form, which mostly worked, and along the way I noticed a few things you may want to decide on, like whether the site should...</div>
+<div class="good"><b>Right: top-down</b>1. Needs you: pick the booking email.<br>2. Goal met? Partly, form works, email not set.<br>3. Short path: set email, then deploy.<br>4. Errors: none.</div></div>
+<p>Written calmly on purpose. The brief notes that ALL-CAPS "CRITICAL" wording makes models overreact. The 150-word cap and the visual line are additions for your setup.</p>
+<div class="copyhead"><b>Output style block</b><button type="button" data-copy="style">Copy</button></div>
+<pre id="style">Answer top-down in four parts, in this order:
+1. Needs you: decisions or inputs only I can give. Write "None" if none.
+2. Goal met?: Yes, Partly or No in one line, with the evidence.
+3. Short path: the next 1 to 3 actions, one line each.
+4. Errors and why: what failed or is uncertain, and the reason. Label facts vs guesses.
+Keep parts 1 to 3 under 150 words. Put detail only in part 4.
+When the answer is numbers, steps or structure, deliver it as a visual (a one-page HTML page, dashboard, sheet, slides or whiteboard) instead of long prose. Lead with the visual, then four short bars, then the detail.</pre><div class="try quiz" data-quiz="l1q2" data-answer="b"><div class="tryhead">Try it now<span class="st">Pick one</span></div><p class="q">An agent report opens with three paragraphs about what it did. What belongs on top instead?</p><div class="choices"><button type="button" class="choice" data-k="a" data-why="Errors go last. You only read them when you need the detail.">Errors and why</button><button type="button" class="choice" data-k="b" data-why="If nothing needs you, you can stop after line one.">Needs you</button><button type="button" class="choice" data-k="c" data-why="That is second. First you need to know if you are blocking anything.">Goal met?</button><button type="button" class="choice" data-k="d" data-why="That is the 3,200-word problem. Steps belong in part 4 at most.">A full list of the steps it took</button></div><p class="fb" aria-live="polite"></p></div></div></details><details><summary><span class="lk">3</span>Which visual to ask for</summary><div class="body">
+<div class="scroll"><table>
+<thead><tr><th>If the output is</th><th>Ask for</th></tr></thead>
+<tbody>
+<tr><td>Numbers you watch</td><td>Dashboard</td></tr>
+<tr><td>Rows to sort or fill</td><td>Sheet</td></tr>
+<tr><td>A plan or decision to keep</td><td>Doc</td></tr>
+<tr><td>A process or architecture</td><td>Whiteboard</td></tr>
+<tr><td>A walkthrough or pitch</td><td>Slides</td></tr>
+<tr><td>A one-off report or lesson</td><td>One-page HTML, like this one</td></tr>
+</tbody></table></div><div class="try quiz" data-quiz="l1q3" data-answer="a"><div class="tryhead">Try it now<span class="st">Pick one</span></div><p class="q">You want to watch Silerio&#x27;s weekly revenue and hours. What do you ask for?</p><div class="choices"><button type="button" class="choice" data-k="a" data-why="Numbers you watch go on a dashboard.">Dashboard</button><button type="button" class="choice" data-k="b" data-why="A doc is for a plan you keep, not numbers you check every week.">Doc</button><button type="button" class="choice" data-k="c" data-why="Slides walk someone through a story. You need a glance.">Slides</button><button type="button" class="choice" data-k="d" data-why="A whiteboard shows a process, not numbers.">Whiteboard</button></div><p class="fb" aria-live="polite"></p></div></div></details><details><summary><span class="lk">4</span>Three ways to install it, all $0</summary><div class="body">
+<div class="opts">
+<div class="opt"><span class="tag">Option A · Permanent Fix</span><br>Paste the block into each Claude project's instructions and each agent's CLAUDE.md. That covers every chat, at about two minutes per project.</div>
+<div class="opt"><span class="tag">Option B · Permanent Fix</span><br>Save it as a Claude Code output style. This covers terminal agents only; check that /output-style exists in your installed version first.</div>
+<div class="opt"><span class="tag w">Wildcard · Strategic Alternative</span><br>Reorder your PIGEON goodnight report template into the 4 parts, so every handoff arrives already sorted. To test it, run one night of reports.</div>
+</div>
+<p style="margin-top:10px"><b>Call:</b> do A now and the Wildcard next. Use B only if terminal agents ignore A.</p><div class="try quiz" data-quiz="l1q4" data-answer="a"><div class="tryhead">Try it now (1 of 2)<span class="st">Pick one</span></div><p class="q">You want every chat inside one Claude project to answer in 4 parts. Which option does that?</p><div class="choices"><button type="button" class="choice" data-k="a" data-why="Project instructions apply to every chat in that project.">Option A: project instructions</button><button type="button" class="choice" data-k="b" data-why="An output style only covers terminal agents, not project chats.">Option B: Claude Code output style</button></div><p class="fb" aria-live="polite"></p></div><div class="try typed"><div class="tryhead">Try it now<span class="st">Your real work, saved</span></div><p class="q">Now install it for real. Paste the block into one project.</p><div class="field"><label for="l1_project">Which project got the style block first?<small>Name it exactly as it shows in Claude.</small></label><input type="text" id="l1_project" data-save="l1_project" data-min="2" placeholder="e.g. Construct" autocomplete="off"><div class="frow"><span>Not answered yet</span><button type="button">Copy</button></div></div></div></div></details><details><summary><span class="lk">5</span>Drill: time yourself</summary><div class="body">
+<ol>
+<li>Open your last real agent handoff report.</li>
+<li>Time how long it takes to find what it needs from you.</li>
+<li>After the block is installed, run your next real task and time the same thing.</li>
+</ol>
+<div class="pass"><div class="ok"><b>Pass</b><br>Under 60 seconds, and faster than before.</div><div class="no"><b>Fail</b><br>Still scrolling. Cut the cap to 100 words and rerun.</div></div><div class="try typed"><div class="tryhead">Try it now<span class="st">Your real work, saved</span></div><p class="q">Your before time. This is the number you beat.</p><div class="field"><label for="l1_secs">Seconds to find what your last report needed from you<small>A guess is fine if you did not time it.</small></label><input type="text" id="l1_secs" data-save="l1_secs" data-min="1" placeholder="e.g. 140" autocomplete="off"><div class="frow"><span>Not answered yet</span><button type="button">Copy</button></div></div></div></div></details><details><summary><span class="lk">6</span>Rewrite one real answer</summary><div class="body">
+<p>Take that same last report and rewrite it in the four parts, one line each. This is your first piece of finished work. It gets assembled with your Lesson 2 answers at the end.</p><div class="try typed"><div class="tryhead">Try it now<span class="st">Your real work, saved</span></div><p class="q">Fill all four lines from your real report.</p><div class="field"><label for="l1_need">1. Needs you<small>What only you can decide or give. &quot;None&quot; counts.</small></label><textarea id="l1_need" data-save="l1_need" data-min="3" placeholder="e.g. Pick the booking email"></textarea><div class="frow"><span>Not answered yet</span><button type="button">Copy</button></div></div><div class="field"><label for="l1_goal">2. Goal met?<small>Yes, Partly or No, with the proof.</small></label><textarea id="l1_goal" data-save="l1_goal" data-min="3" placeholder="e.g. Partly: form works, email not set"></textarea><div class="frow"><span>Not answered yet</span><button type="button">Copy</button></div></div><div class="field"><label for="l1_path">3. Short path<small>Next 1 to 3 moves.</small></label><textarea id="l1_path" data-save="l1_path" data-min="3" placeholder="e.g. Set email, deploy, test on phone"></textarea><div class="frow"><span>Not answered yet</span><button type="button">Copy</button></div></div><div class="field"><label for="l1_err">4. Errors and why<small>What broke or is a guess.</small></label><textarea id="l1_err" data-save="l1_err" data-min="3" placeholder="e.g. None"></textarea><div class="frow"><span>Not answered yet</span><button type="button">Copy</button></div></div></div></div></details>
+</div>
+<div class="plat" id="plat">Platinum: Lesson 1 complete.</div><div class="next"><a id="nextbtn" class="nextbtn locked" href="lesson2.html" aria-disabled="true" tabindex="-1"><span>Go to Lesson 2: the manager brief</span><span class="ico" aria-hidden="true">🔒</span></a><p class="nextnote" id="nextnote"></p></div>
+</div>
+</section>
+<script>
+(function(){
+// Every typed answer in Study Plan 1, in the order they get assembled.
+const FIELDS=[
+ ['Lesson 1: Fast digestion',[
+  ['l1_project','Project that gets the style block first'],
+  ['l1_secs','Seconds to find what my last report needed from me (before)'],
+  ['l1_need','1. Needs you'],
+  ['l1_goal','2. Goal met?'],
+  ['l1_path','3. Short path'],
+  ['l1_err','4. Errors and why']]],
+ ['Lesson 2: The manager brief',[
+  ['l2_job','Full job'],
+  ['l2_why','Why'],
+  ['l2_guard','Guardrails'],
+  ['l2_done','Done looks like'],
+  ['l2_task','First real task this brief goes to']]]
+];
+const P='sp1:';
+const S={get:k=>{try{return localStorage.getItem(P+k)}catch(e){return null}},
+ set:(k,v)=>{try{localStorage.setItem(P+k,v)}catch(e){}},
+ clear:()=>{try{Object.keys(localStorage).filter(k=>k.startsWith(P)).forEach(k=>localStorage.removeItem(k))}catch(e){}}};
+
+async function copyText(text,btn){
+ const label=btn.dataset.label||btn.textContent;btn.dataset.label=label;
+ let ok=false;
+ try{await navigator.clipboard.writeText(text);ok=true}catch(e){
+  const t=document.createElement('textarea');t.value=text;t.setAttribute('readonly','');t.style.position='fixed';t.style.opacity='0';
+  document.body.appendChild(t);t.select();t.setSelectionRange(0,text.length);
+  try{ok=document.execCommand('copy')}catch(e2){}
+  t.remove();
+ }
+ btn.textContent=ok?'Copied':'Copy failed, select and copy by hand';
+ setTimeout(()=>{btn.textContent=label},2000);
+}
+
+function assemble(){
+ const out=['Study Plan 1: my answers',''];
+ FIELDS.forEach(([lesson,fs])=>{
+  out.push(lesson);
+  fs.forEach(([id,label])=>{const v=(S.get('f:'+id)||'').trim();out.push(label+': '+(v||'(not answered yet)'))});
+  out.push('');
+ });
+ return out.join('\n').trim();
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+ if('scrollRestoration' in history)history.scrollRestoration='manual';
+ window.scrollTo(0,0);
+
+ // copy buttons for templates
+ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',()=>{
+  copyText(document.getElementById(b.dataset.copy).textContent,b)}));
+
+ // quizzes
+ document.querySelectorAll('.quiz').forEach(qz=>{
+  const id=qz.dataset.quiz,ans=qz.dataset.answer,fb=qz.querySelector('.fb'),st=qz.querySelector('.st');
+  const bs=[...qz.querySelectorAll('.choice')];
+  const win=(b,silent)=>{
+   qz.dataset.ok='1';qz.classList.add('done');b.classList.add('right');
+   bs.forEach(x=>x.setAttribute('aria-disabled','true'));
+   fb.className='fb yes';fb.textContent='Right. '+b.dataset.why;st.textContent='Passed';
+   if(!silent){S.set('q:'+id,'ok');update()}
+  };
+  bs.forEach(b=>b.addEventListener('click',()=>{
+   if(qz.dataset.ok)return;
+   if(b.dataset.k===ans){win(b)}
+   else{b.classList.add('wrong');fb.className='fb no';fb.textContent='Not this one. '+b.dataset.why+' Try again.'}
+  }));
+  if(S.get('q:'+id)==='ok'){const b=bs.find(x=>x.dataset.k===ans);if(b)win(b,true)}
+ });
+
+ // typed answers
+ document.querySelectorAll('[data-save]').forEach(el=>{
+  const id=el.dataset.save,min=+(el.dataset.min||1),wrap=el.closest('.field'),st=wrap.querySelector('.frow span');
+  const v=S.get('f:'+id);if(v!==null)el.value=v;
+  const check=()=>{const ok=el.value.trim().length>=min;wrap.classList.toggle('ok',ok);el.dataset.ok=ok?'1':'';
+   st.textContent=ok?'Saved on this phone':(el.value.trim()?'Saved, keep going':'Not answered yet');return ok};
+  el.addEventListener('input',()=>{S.set('f:'+id,el.value);check();update()});
+  wrap.querySelector('button').addEventListener('click',e=>copyText(el.value.trim()?el.value:'(empty)',e.currentTarget));
+  check();
+ });
+
+ // cards, meter, unlock
+ const ds=[...document.querySelectorAll('#locks details')];
+ const done=c=>{const qs=[...c.querySelectorAll('.quiz')],fs=[...c.querySelectorAll('[data-save][data-min]')];
+  return qs.every(q=>q.dataset.ok)&&fs.every(f=>f.dataset.ok)};
+ function update(){
+  if(!ds.length)return;
+  let n=0;
+  ds.forEach(d=>{
+   const ok=done(d);d.classList.toggle('got',ok);if(ok)n++;
+   d.querySelectorAll('.try.typed').forEach(t=>t.classList.toggle('done',[...t.querySelectorAll('[data-save][data-min]')].every(f=>f.dataset.ok)));
+  });
+  const t=ds.length,all=n===t;
+  document.getElementById('tcount').textContent=n+' / '+t;
+  document.getElementById('tbar').style.width=(n/t*100)+'%';
+  document.getElementById('trophy').classList.toggle('plat',all);
+  document.getElementById('plat').classList.toggle('on',all);
+  const nb=document.getElementById('nextbtn'),nn=document.getElementById('nextnote');
+  if(nb){nb.classList.toggle('locked',!all);nb.classList.toggle('open',all);nb.setAttribute('aria-disabled',all?'false':'true');
+   nb.tabIndex=all?0:-1;nb.querySelector('.ico').textContent=all?'→':'🔒';
+   nn.textContent=all?'Passed. Tap to go on.':'Pass '+(t-n)+' more card'+(t-n===1?'':'s')+' to unlock.'}
+  if(all)S.set('pass:'+document.body.dataset.lesson,'1');
+  const sv=document.getElementById('allanswers');if(sv)sv.textContent=assemble();
+ }
+ window.SP1update=update;
+
+ // assembled answers (any page that shows them)
+ const sv=document.getElementById('allanswers');
+ if(sv){sv.textContent=assemble();document.getElementById('copyall').addEventListener('click',e=>copyText(assemble(),e.currentTarget))}
+
+ // progress on the start page
+ document.querySelectorAll('[data-passed]').forEach(el=>{if(S.get('pass:'+el.dataset.passed))el.textContent='Passed'});
+
+ // two-tap reset
+ const rs=document.getElementById('reset');
+ if(rs)rs.addEventListener('click',()=>{
+  if(rs.dataset.armed){S.clear();location.href='index.html'}
+  else{rs.dataset.armed='1';rs.textContent='Tap again to erase every answer';setTimeout(()=>{delete rs.dataset.armed;rs.textContent='Start over'},4000)}
+ });
+
+ update();
+});
+})();
+</script>
+</body>
+</html>
